@@ -45,7 +45,13 @@ export function DateBlock({
           : "bg-gradient-to-b from-secondary to-secondary-light text-white"
       }`}
     >
-      <span className="text-2xl font-bold leading-tight">{parsed.day}</span>
+      <span
+        className={`font-bold leading-tight ${
+          parsed.day.includes("-") ? "text-lg" : "text-2xl"
+        }`}
+      >
+        {parsed.day}
+      </span>
       <span className="text-[10px] font-semibold uppercase tracking-wider">
         {parsed.month}
       </span>

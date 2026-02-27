@@ -89,14 +89,14 @@ export default function NosotrosPage() {
                 <Users className="h-10 w-10 text-primary" />
               </div>
               <h3 className="font-heading text-xl font-semibold text-primary">
-                Luis Mariano y esposa
+                Luis Mariano y María Angélica
               </h3>
               <p className="mt-1 text-sm font-medium text-secondary">
                 Coordinadores de Esposos con Propósito
               </p>
               <p className="mx-auto mt-4 max-w-xl leading-relaxed text-text-light">
                 Con más de 30 años dedicados a la pastoral, la catequesis y la
-                formación de jóvenes y familias, Luis Mariano y su esposa son
+                formación de jóvenes y familias, Luis Mariano y María Angélica son
                 el corazón de esta comunidad. Su experiencia acompañando
                 matrimonios y su testimonio de vida son la guía que nos
                 inspira a seguir creciendo juntos.
