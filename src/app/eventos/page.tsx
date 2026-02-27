@@ -1,8 +1,10 @@
 import { Metadata } from "next";
-import { Calendar, MapPin, Clock, Share2 } from "lucide-react";
+import { Calendar, MapPin, Clock } from "lucide-react";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
-import { EVENTOS } from "@/data/eventos";
+import { getEventos } from "@/sanity/queries";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Eventos | Esposos con Propósito",
@@ -10,9 +12,10 @@ export const metadata: Metadata = {
     "Próximos encuentros y retiros de nuestra comunidad de parejas.",
 };
 
-export default function EventosPage() {
-  const upcoming = EVENTOS.filter((e) => !e.isPast);
-  const past = EVENTOS.filter((e) => e.isPast);
+export default async function EventosPage() {
+  const eventos = await getEventos();
+  const upcoming = eventos.filter((e) => !e.isPast);
+  const past = eventos.filter((e) => e.isPast);
 
   return (
     <>
@@ -44,7 +47,7 @@ export default function EventosPage() {
 
           <div className="space-y-6">
             {upcoming.map((evento, i) => (
-              <AnimatedSection key={evento.id} delay={i * 0.1}>
+              <AnimatedSection key={evento._id} delay={i * 0.1}>
                 <div className="rounded-2xl border border-cream-dark bg-white p-6 transition-shadow hover:shadow-md sm:p-8">
                   <div className="mb-3 inline-block rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-secondary">
                     Próximo
@@ -90,7 +93,7 @@ export default function EventosPage() {
 
             <div className="space-y-6">
               {past.map((evento, i) => (
-                <AnimatedSection key={evento.id} delay={i * 0.1}>
+                <AnimatedSection key={evento._id} delay={i * 0.1}>
                   <div className="rounded-2xl border border-cream-dark bg-white/70 p-6 sm:p-8">
                     <h3 className="mb-3 font-heading text-xl font-semibold text-primary/80">
                       {evento.title}

@@ -3,7 +3,16 @@ import Link from "next/link";
 import { BookOpen, Clock, ArrowRight, ExternalLink } from "lucide-react";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
-import { ARTICULOS, CATEGORY_COLORS } from "@/data/articulos";
+import { getArticulos } from "@/sanity/queries";
+
+export const revalidate = 60;
+
+const CATEGORY_COLORS: Record<string, string> = {
+  Matrimonio: "bg-primary/10 text-primary",
+  Familia: "bg-secondary/10 text-secondary",
+  Crecimiento: "bg-accent/10 text-accent",
+  Fe: "bg-primary/10 text-primary",
+};
 
 export const metadata: Metadata = {
   title: "Recursos | Esposos con Propósito",
@@ -42,7 +51,9 @@ const BOOKS = [
   },
 ];
 
-export default function RecursosPage() {
+export default async function RecursosPage() {
+  const articulos = await getArticulos();
+
   return (
     <>
       <section className="bg-primary py-20 text-center text-white">
@@ -65,9 +76,9 @@ export default function RecursosPage() {
       <section className="py-20">
         <div className="mx-auto max-w-4xl px-4">
           <div className="space-y-6">
-            {ARTICULOS.map((article, i) => (
-              <AnimatedSection key={article.id} delay={i * 0.1}>
-                <Link href={`/recursos/${article.id}`}>
+            {articulos.map((article, i) => (
+              <AnimatedSection key={article._id} delay={i * 0.1}>
+                <Link href={`/recursos/${article.slug}`}>
                   <article className="group rounded-2xl border border-cream-dark bg-white p-6 transition-all hover:shadow-md sm:p-8">
                     <div className="mb-4 flex items-center gap-3">
                       <span

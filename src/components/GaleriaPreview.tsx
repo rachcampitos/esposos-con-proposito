@@ -1,6 +1,14 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Camera } from "lucide-react";
 import { AnimatedSection } from "./AnimatedSection";
+import { urlFor, type SanityImageSource } from "@/sanity/image";
+
+interface Foto {
+  _id: string;
+  title: string | null;
+  image: SanityImageSource;
+}
 
 const PLACEHOLDER_PHOTOS = [
   { id: 1, alt: "Momento del retiro", color: "from-primary/25 to-primary/10" },
@@ -11,7 +19,9 @@ const PLACEHOLDER_PHOTOS = [
   { id: 6, alt: "Cierre del retiro", color: "from-accent/20 to-secondary/10" },
 ];
 
-export function GaleriaPreview() {
+export function GaleriaPreview({ fotos }: { fotos: Foto[] }) {
+  const hasFotos = fotos.length > 0;
+
   return (
     <section className="py-20" style={{ background: "#FAF8F5" }}>
       <div className="mx-auto max-w-6xl px-4">
@@ -26,27 +36,48 @@ export function GaleriaPreview() {
         </AnimatedSection>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-          {PLACEHOLDER_PHOTOS.map((photo, i) => (
-            <AnimatedSection key={photo.id} delay={i * 0.08}>
-              <div
-                className={`group relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${photo.color} transition-all hover:scale-[1.02]`}
-              >
-                <div className="text-center transition-transform group-hover:scale-95">
-                  <Camera className="mx-auto h-8 w-8 text-text-lighter/60" />
-                  <p className="mt-2 text-xs text-text-lighter">
-                    {photo.alt}
-                  </p>
-                </div>
+          {hasFotos
+            ? fotos.slice(0, 6).map((foto, i) => (
+                <AnimatedSection key={foto._id} delay={i * 0.08}>
+                  <div className="group relative aspect-square overflow-hidden rounded-2xl">
+                    <Image
+                      src={urlFor(foto.image).width(400).height(400).url()}
+                      alt={foto.title || "Foto de la comunidad"}
+                      fill
+                      className="object-cover transition-transform group-hover:scale-105"
+                      sizes="(max-width: 640px) 50vw, 33vw"
+                    />
+                    {foto.title && (
+                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
+                        <p className="p-3 text-sm font-medium text-white">
+                          {foto.title}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </AnimatedSection>
+              ))
+            : PLACEHOLDER_PHOTOS.map((photo, i) => (
+                <AnimatedSection key={photo.id} delay={i * 0.08}>
+                  <div
+                    className={`group relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${photo.color} transition-all hover:scale-[1.02]`}
+                  >
+                    <div className="text-center transition-transform group-hover:scale-95">
+                      <Camera className="mx-auto h-8 w-8 text-text-lighter/60" />
+                      <p className="mt-2 text-xs text-text-lighter">
+                        {photo.alt}
+                      </p>
+                    </div>
 
-                {/* Hover overlay */}
-                <div className="absolute inset-0 flex items-center justify-center bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
-                  <p className="font-heading text-sm font-medium text-white">
-                    {photo.alt}
-                  </p>
-                </div>
-              </div>
-            </AnimatedSection>
-          ))}
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
+                      <p className="font-heading text-sm font-medium text-white">
+                        {photo.alt}
+                      </p>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              ))}
         </div>
 
         <AnimatedSection className="mt-10 text-center">

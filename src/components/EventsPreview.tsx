@@ -1,10 +1,21 @@
 import Link from "next/link";
 import { Calendar, MapPin, Clock, ArrowRight } from "lucide-react";
 import { AnimatedSection } from "./AnimatedSection";
-import { EVENTOS } from "@/data/eventos";
 
-export function EventsPreview() {
-  const upcoming = EVENTOS.filter((e) => !e.isPast).slice(0, 2);
+interface Evento {
+  _id: string;
+  title: string;
+  date: string;
+  time: string | null;
+  location: string;
+  description: string;
+  isPast: boolean;
+}
+
+export function EventsPreview({ eventos }: { eventos: Evento[] }) {
+  const upcoming = eventos.filter((e) => !e.isPast).slice(0, 2);
+
+  if (upcoming.length === 0) return null;
 
   return (
     <section className="py-20" style={{ background: "#FAF8F5" }}>
@@ -21,7 +32,7 @@ export function EventsPreview() {
 
         <div className="grid gap-6 md:grid-cols-2">
           {upcoming.map((evento, i) => (
-            <AnimatedSection key={evento.id} delay={i * 0.15} className="h-full">
+            <AnimatedSection key={evento._id} delay={i * 0.15} className="h-full">
               <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-cream-dark bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-soft-lg sm:p-8">
                 {/* Accent border left */}
                 <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-secondary to-secondary-light" />

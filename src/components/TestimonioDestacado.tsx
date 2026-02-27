@@ -4,19 +4,32 @@ import { useState, useEffect } from "react";
 import { Quote } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedSection } from "./AnimatedSection";
-import { TESTIMONIOS } from "@/data/testimonios";
 
-export function TestimonioDestacado() {
+interface Testimonio {
+  _id: string;
+  quote: string;
+  couple: string;
+  years: string;
+}
+
+export function TestimonioDestacado({
+  testimonios,
+}: {
+  testimonios: Testimonio[];
+}) {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
+    if (testimonios.length <= 1) return;
     const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % TESTIMONIOS.length);
+      setCurrent((prev) => (prev + 1) % testimonios.length);
     }, 7000);
     return () => clearInterval(timer);
-  }, []);
+  }, [testimonios.length]);
 
-  const t = TESTIMONIOS[current];
+  if (testimonios.length === 0) return null;
+
+  const t = testimonios[current];
 
   return (
     <section className="relative overflow-hidden py-20">
@@ -40,7 +53,7 @@ export function TestimonioDestacado() {
 
             <AnimatePresence mode="wait">
               <motion.div
-                key={t.id}
+                key={t._id}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
@@ -59,7 +72,7 @@ export function TestimonioDestacado() {
 
             {/* Dots with glow effect */}
             <div className="mt-6 flex justify-center gap-2">
-              {TESTIMONIOS.map((_, i) => (
+              {testimonios.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrent(i)}

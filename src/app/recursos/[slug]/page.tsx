@@ -1,21 +1,32 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Clock, ChevronRight } from "lucide-react";
+import { ArrowLeft, Clock } from "lucide-react";
+import { PortableText } from "next-sanity";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
-import { ARTICULOS, CATEGORY_COLORS } from "@/data/articulos";
+import { getArticulo, getArticulos } from "@/sanity/queries";
+
+export const revalidate = 60;
+
+const CATEGORY_COLORS: Record<string, string> = {
+  Matrimonio: "bg-primary/10 text-primary",
+  Familia: "bg-secondary/10 text-secondary",
+  Crecimiento: "bg-accent/10 text-accent",
+  Fe: "bg-primary/10 text-primary",
+};
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  return ARTICULOS.map((a) => ({ slug: a.id }));
+  const articulos = await getArticulos();
+  return articulos.map((a) => ({ slug: a.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = ARTICULOS.find((a) => a.id === slug);
+  const article = await getArticulo(slug);
   if (!article) return { title: "Artículo no encontrado" };
 
   return {
@@ -26,7 +37,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
-  const article = ARTICULOS.find((a) => a.id === slug);
+  const [article, allArticulos] = await Promise.all([
+    getArticulo(slug),
+    getArticulos(),
+  ]);
 
   if (!article) {
     return (
@@ -39,9 +53,9 @@ export default async function ArticlePage({ params }: Props) {
     );
   }
 
-  const currentIndex = ARTICULOS.findIndex((a) => a.id === slug);
-  const nextArticle = ARTICULOS[currentIndex + 1] || null;
-  const prevArticle = currentIndex > 0 ? ARTICULOS[currentIndex - 1] : null;
+  const currentIndex = allArticulos.findIndex((a) => a.slug === slug);
+  const nextArticle = allArticulos[currentIndex + 1] || null;
+  const prevArticle = currentIndex > 0 ? allArticulos[currentIndex - 1] : null;
 
   return (
     <>
@@ -79,15 +93,8 @@ export default async function ArticlePage({ params }: Props) {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-3xl px-4">
           <AnimatedSection>
-            <div className="space-y-5">
-              {article.content.map((paragraph, i) => (
-                <p
-                  key={i}
-                  className="text-base leading-[1.8] text-text-light sm:text-lg"
-                >
-                  {paragraph}
-                </p>
-              ))}
+            <div className="prose-article space-y-5 text-base leading-[1.8] text-text-light sm:text-lg">
+              <PortableText value={article.content} />
             </div>
           </AnimatedSection>
 
@@ -97,7 +104,7 @@ export default async function ArticlePage({ params }: Props) {
               <div className="grid gap-4 sm:grid-cols-2">
                 {prevArticle && (
                   <Link
-                    href={`/recursos/${prevArticle.id}`}
+                    href={`/recursos/${prevArticle.slug}`}
                     className="group rounded-xl border border-cream-dark bg-white p-5 transition-shadow hover:shadow-md"
                   >
                     <p className="mb-1 text-xs font-medium uppercase tracking-wider text-text-lighter">
@@ -110,7 +117,7 @@ export default async function ArticlePage({ params }: Props) {
                 )}
                 {nextArticle && (
                   <Link
-                    href={`/recursos/${nextArticle.id}`}
+                    href={`/recursos/${nextArticle.slug}`}
                     className={`group rounded-xl border border-cream-dark bg-white p-5 text-right transition-shadow hover:shadow-md ${!prevArticle ? "sm:col-start-2" : ""}`}
                   >
                     <p className="mb-1 text-xs font-medium uppercase tracking-wider text-text-lighter">
