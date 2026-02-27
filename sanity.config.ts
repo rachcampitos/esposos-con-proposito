@@ -20,6 +20,21 @@ export default defineConfig({
             S.listItem()
               .title("Anuncios")
               .child(S.documentTypeList("anuncio").title("Anuncios")),
+            S.listItem()
+              .title("Reflexión Semanal")
+              .child(
+                S.documentTypeList("reflexionSemanal").title("Reflexiones"),
+              ),
+            S.listItem()
+              .title("Temporada Litúrgica")
+              .child(
+                S.documentTypeList("temporadaLiturgica").title("Temporadas"),
+              ),
+            S.listItem()
+              .title("Santo del Mes")
+              .child(
+                S.documentTypeList("santoDelMes").title("Santos"),
+              ),
             S.divider(),
             S.listItem()
               .title("Eventos")

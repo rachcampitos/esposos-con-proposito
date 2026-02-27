@@ -1,6 +1,7 @@
 import { Metadata } from "next";
-import { Calendar, MapPin, Clock } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 import { AnimatedSection } from "@/components/AnimatedSection";
+import { DateBlock } from "@/components/DateBlock";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { getEventos } from "@/sanity/queries";
 
@@ -49,20 +50,21 @@ export default async function EventosPage() {
             {upcoming.map((evento, i) => (
               <AnimatedSection key={evento._id} delay={i * 0.1}>
                 <div className="rounded-2xl border border-cream-dark bg-white p-6 transition-shadow hover:shadow-md sm:p-8">
-                  <div className="mb-3 inline-block rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-secondary">
-                    Próximo
+                  <div className="mb-4 flex items-start gap-4">
+                    <DateBlock dateStr={evento.date} />
+                    <div className="flex-1">
+                      <div className="mb-1 inline-block rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-secondary">
+                        Próximo
+                      </div>
+                      <h3 className="mt-2 font-heading text-xl font-semibold text-primary">
+                        {evento.title}
+                      </h3>
+                    </div>
                   </div>
-                  <h3 className="mb-3 font-heading text-xl font-semibold text-primary">
-                    {evento.title}
-                  </h3>
                   <p className="mb-5 leading-relaxed text-text-light">
                     {evento.description}
                   </p>
                   <div className="flex flex-wrap gap-4 text-sm text-text-light">
-                    <span className="flex items-center gap-1.5">
-                      <Calendar className="h-4 w-4 text-secondary" />
-                      {evento.date}
-                    </span>
                     {evento.time && (
                       <span className="flex items-center gap-1.5">
                         <Clock className="h-4 w-4 text-secondary" />
@@ -95,16 +97,15 @@ export default async function EventosPage() {
               {past.map((evento, i) => (
                 <AnimatedSection key={evento._id} delay={i * 0.1}>
                   <div className="rounded-2xl border border-cream-dark bg-white/70 p-6 sm:p-8">
-                    <h3 className="mb-3 font-heading text-xl font-semibold text-primary/80">
-                      {evento.title}
-                    </h3>
+                    <div className="mb-4 flex items-start gap-4">
+                      <DateBlock dateStr={evento.date} muted />
+                      <h3 className="font-heading text-xl font-semibold text-primary/80">
+                        {evento.title}
+                      </h3>
+                    </div>
                     <p className="mb-4 leading-relaxed text-text-light">
                       {evento.description}
                     </p>
-                    <span className="flex items-center gap-1.5 text-sm text-text-lighter">
-                      <Calendar className="h-4 w-4" />
-                      {evento.date}
-                    </span>
                   </div>
                 </AnimatedSection>
               ))}

@@ -38,6 +38,62 @@ export async function getAllAnuncios() {
   );
 }
 
+// ---------- Reflexión Semanal ----------
+
+export async function getReflexionSemanal() {
+  return safeFetch<{
+    _id: string;
+    titulo: string;
+    cita: string;
+    textoCita: string;
+    reflexion: string;
+  } | null>(
+    `*[_type == "reflexionSemanal" && active == true] | order(_updatedAt desc) [0] {
+      _id, titulo, cita, textoCita, reflexion
+    }`,
+    undefined,
+    null,
+  );
+}
+
+// ---------- Temporada Litúrgica ----------
+
+export async function getTemporadaLiturgica() {
+  return safeFetch<{
+    _id: string;
+    temporada: string;
+    titulo: string;
+    mensaje: string;
+    cita: string | null;
+    textoCita: string | null;
+  } | null>(
+    `*[_type == "temporadaLiturgica" && active == true] | order(_updatedAt desc) [0] {
+      _id, temporada, titulo, mensaje, cita, textoCita
+    }`,
+    undefined,
+    null,
+  );
+}
+
+// ---------- Santo del Mes ----------
+
+export async function getSantoDelMes() {
+  return safeFetch<{
+    _id: string;
+    nombre: string;
+    fiesta: string;
+    patronoDe: string | null;
+    bio: string;
+    oracion: string | null;
+  } | null>(
+    `*[_type == "santoDelMes" && active == true] | order(_updatedAt desc) [0] {
+      _id, nombre, fiesta, patronoDe, bio, oracion
+    }`,
+    undefined,
+    null,
+  );
+}
+
 // ---------- Eventos ----------
 
 export async function getEventos() {

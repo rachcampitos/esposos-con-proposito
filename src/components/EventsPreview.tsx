@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Calendar, MapPin, Clock, ArrowRight } from "lucide-react";
+import { MapPin, Clock, ArrowRight } from "lucide-react";
 import { AnimatedSection } from "./AnimatedSection";
+import { DateBlock } from "./DateBlock";
 
 interface Evento {
   _id: string;
@@ -34,39 +35,33 @@ export function EventsPreview({ eventos }: { eventos: Evento[] }) {
           {upcoming.map((evento, i) => (
             <AnimatedSection key={evento._id} delay={i * 0.15} className="h-full">
               <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-cream-dark bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-soft-lg sm:p-8">
-                {/* Accent border left */}
-                <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-secondary to-secondary-light" />
-
-                <div className="mb-4 inline-block rounded-full bg-gradient-to-r from-secondary to-secondary-light px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
-                  Próximo evento
+                {/* Date block + content */}
+                <div className="mb-4 flex items-start gap-4">
+                  <DateBlock dateStr={evento.date} />
+                  <div className="flex-1">
+                    <div className="mb-1 inline-block rounded-full bg-gradient-to-r from-secondary to-secondary-light px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
+                      Próximo evento
+                    </div>
+                    <h3 className="mt-2 font-heading text-xl font-semibold text-primary">
+                      {evento.title}
+                    </h3>
+                  </div>
                 </div>
-                <h3 className="mb-4 font-heading text-xl font-semibold text-primary">
-                  {evento.title}
-                </h3>
+
                 <p className="mb-5 flex-1 leading-relaxed text-text-light">
                   {evento.description}
                 </p>
-                <div className="mt-auto space-y-2 text-sm text-text-light">
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary/10">
-                      <Calendar className="h-3.5 w-3.5 text-secondary" />
-                    </div>
-                    {evento.date}
-                  </div>
+                <div className="mt-auto flex flex-wrap gap-4 text-sm text-text-light">
                   {evento.time && (
-                    <div className="flex items-center gap-2">
-                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary/10">
-                        <Clock className="h-3.5 w-3.5 text-secondary" />
-                      </div>
+                    <span className="flex items-center gap-1.5">
+                      <Clock className="h-3.5 w-3.5 text-secondary" />
                       {evento.time}
-                    </div>
+                    </span>
                   )}
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary/10">
-                      <MapPin className="h-3.5 w-3.5 text-secondary" />
-                    </div>
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5 text-secondary" />
                     {evento.location}
-                  </div>
+                  </span>
                 </div>
               </div>
             </AnimatedSection>
