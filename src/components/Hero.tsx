@@ -53,8 +53,8 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.3 }}
           className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/80 sm:text-xl"
         >
-          Una comunidad de parejas que caminan juntas en la fe, fortaleciendo
-          sus matrimonios y sus familias.
+          Esposos unidos por el sacramento del matrimonio, caminando juntos
+          en la fe para fortalecer nuestros hogares y familias.
         </motion.p>
 
         <motion.div

@@ -20,11 +20,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Esposos con Propósito | Comunidad de matrimonios en la fe",
   description:
-    "Comunidad de parejas del Colegio Reina del Mundo que caminan juntas en la fe, fortaleciendo sus matrimonios y familias.",
+    "Comunidad de esposos del Colegio Reina del Mundo, unidos por el sacramento del matrimonio, caminando juntos en la fe.",
   keywords: [
     "esposos con propósito",
     "matrimonio católico",
-    "comunidad de parejas",
+    "comunidad de esposos",
     "reina del mundo",
     "la molina",
     "retiro de parejas",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Esposos con Propósito",
     description:
-      "Comunidad de parejas que caminan juntas en la fe, fortaleciendo sus matrimonios y familias.",
+      "Comunidad de esposos unidos por el sacramento del matrimonio, caminando juntos en la fe.",
     type: "website",
     locale: "es_PE",
   },

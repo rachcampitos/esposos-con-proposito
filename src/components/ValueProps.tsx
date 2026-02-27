@@ -31,8 +31,9 @@ export function ValueProps() {
             Lo que nos une
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-text-light">
-            Somos parejas del Colegio Reina del Mundo que elegimos caminar
-            juntas, apoyarnos y crecer en nuestra fe y en nuestro matrimonio.
+            Somos esposos del Colegio Reina del Mundo, unidos por el
+            sacramento del matrimonio, que elegimos caminar juntos y crecer
+            en nuestra fe y en nuestros hogares.
           </p>
         </AnimatedSection>
 

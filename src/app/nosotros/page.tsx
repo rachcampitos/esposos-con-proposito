@@ -23,9 +23,9 @@ export default function NosotrosPage() {
               Quiénes somos
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-white/80">
-              Somos un grupo de parejas del Colegio Reina del Mundo que
-              decidimos caminar juntos en la fe para fortalecer nuestros
-              matrimonios y nuestras familias.
+              Somos una comunidad de esposos unidos por el sacramento del
+              matrimonio, del Colegio Reina del Mundo, que caminamos juntos
+              en la fe para fortalecer nuestros hogares y nuestras familias.
             </p>
           </AnimatedSection>
         </div>
@@ -45,7 +45,7 @@ export default function NosotrosPage() {
                 Vicente de Paúl, en Rinconada, La Molina. Bajo la guía de
                 nuestros coordinadores, quienes llevan más de 30 años dedicados
                 a la formación pastoral, catequesis y acompañamiento de
-                familias, un grupo de parejas decidimos ir más allá de ser solo
+                familias, un grupo de esposos decidimos ir más allá de ser solo
                 &ldquo;papás del colegio&rdquo; y construir algo más profundo.
               </p>
               <p className="leading-relaxed text-text-light">

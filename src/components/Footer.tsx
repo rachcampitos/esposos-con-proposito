@@ -23,8 +23,8 @@ export function Footer() {
               </span>
             </div>
             <p className="text-sm leading-relaxed text-text-light">
-              Comunidad de parejas del Colegio Reina del Mundo que caminan
-              juntas en la fe, fortaleciendo sus matrimonios y familias.
+              Comunidad de esposos del Colegio Reina del Mundo, unidos por
+              el sacramento del matrimonio, caminando juntos en la fe.
             </p>
           </div>
 
