@@ -7,7 +7,7 @@ export function EventsPreview() {
   const upcoming = EVENTOS.filter((e) => !e.isPast).slice(0, 2);
 
   return (
-    <section className="bg-white/50 py-20">
+    <section className="py-20" style={{ background: "#FAF8F5" }}>
       <div className="mx-auto max-w-6xl px-4">
         <AnimatedSection className="mb-12 text-center">
           <h2 className="font-heading text-3xl font-bold text-primary sm:text-4xl">
@@ -21,8 +21,8 @@ export function EventsPreview() {
 
         <div className="grid gap-6 md:grid-cols-2">
           {upcoming.map((evento, i) => (
-            <AnimatedSection key={evento.id} delay={i * 0.15}>
-              <div className="group relative overflow-hidden rounded-2xl border border-cream-dark bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-soft-lg sm:p-8">
+            <AnimatedSection key={evento.id} delay={i * 0.15} className="h-full">
+              <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-cream-dark bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-soft-lg sm:p-8">
                 {/* Accent border left */}
                 <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-secondary to-secondary-light" />
 
@@ -32,10 +32,10 @@ export function EventsPreview() {
                 <h3 className="mb-4 font-heading text-xl font-semibold text-primary">
                   {evento.title}
                 </h3>
-                <p className="mb-5 leading-relaxed text-text-light">
+                <p className="mb-5 flex-1 leading-relaxed text-text-light">
                   {evento.description}
                 </p>
-                <div className="space-y-2 text-sm text-text-light">
+                <div className="mt-auto space-y-2 text-sm text-text-light">
                   <div className="flex items-center gap-2">
                     <div className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary/10">
                       <Calendar className="h-3.5 w-3.5 text-secondary" />

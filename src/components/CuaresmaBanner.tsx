@@ -48,12 +48,12 @@ export function CuaresmaBanner() {
 
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {PRACTICAS.map((p, i) => (
-                <AnimatedSection key={p.title} delay={i * 0.12}>
-                  <div className="rounded-xl border border-[#D4A574]/20 bg-white/10 p-5 backdrop-blur-sm transition-all hover:border-[#D4A574]/40 hover:bg-white/15">
+                <AnimatedSection key={p.title} delay={i * 0.12} className="h-full">
+                  <div className="flex h-full flex-col rounded-xl border border-[#D4A574]/20 bg-white/10 p-5 backdrop-blur-sm transition-all hover:border-[#D4A574]/40 hover:bg-white/15">
                     <p className="mb-2 font-heading font-semibold text-[#D4A574]">
                       {p.title}
                     </p>
-                    <p className="text-sm leading-relaxed text-white/70">
+                    <p className="flex-1 text-sm leading-relaxed text-white/70">
                       {p.description}
                     </p>
                   </div>

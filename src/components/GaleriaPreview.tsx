@@ -13,7 +13,7 @@ const PLACEHOLDER_PHOTOS = [
 
 export function GaleriaPreview() {
   return (
-    <section className="bg-white/50 py-20">
+    <section className="py-20" style={{ background: "#FAF8F5" }}>
       <div className="mx-auto max-w-6xl px-4">
         <AnimatedSection className="mb-12 text-center">
           <h2 className="font-heading text-3xl font-bold text-primary sm:text-4xl">
@@ -25,38 +25,28 @@ export function GaleriaPreview() {
           </p>
         </AnimatedSection>
 
-        {/* Masonry-like grid */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-          {PLACEHOLDER_PHOTOS.map((photo, i) => {
-            const isLarge = i === 0 || i === 3;
-            return (
-              <AnimatedSection
-                key={photo.id}
-                delay={i * 0.08}
-                className={isLarge ? "sm:col-span-2 sm:row-span-1" : ""}
+          {PLACEHOLDER_PHOTOS.map((photo, i) => (
+            <AnimatedSection key={photo.id} delay={i * 0.08}>
+              <div
+                className={`group relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${photo.color} transition-all hover:scale-[1.02]`}
               >
-                <div
-                  className={`group relative flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${photo.color} transition-all hover:scale-[1.02] ${
-                    isLarge ? "aspect-[16/9]" : "aspect-[4/3]"
-                  }`}
-                >
-                  <div className="text-center transition-transform group-hover:scale-95">
-                    <Camera className="mx-auto h-8 w-8 text-text-lighter/60" />
-                    <p className="mt-2 text-xs text-text-lighter">
-                      {photo.alt}
-                    </p>
-                  </div>
-
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
-                    <p className="font-heading text-sm font-medium text-white">
-                      {photo.alt}
-                    </p>
-                  </div>
+                <div className="text-center transition-transform group-hover:scale-95">
+                  <Camera className="mx-auto h-8 w-8 text-text-lighter/60" />
+                  <p className="mt-2 text-xs text-text-lighter">
+                    {photo.alt}
+                  </p>
                 </div>
-              </AnimatedSection>
-            );
-          })}
+
+                {/* Hover overlay */}
+                <div className="absolute inset-0 flex items-center justify-center bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
+                  <p className="font-heading text-sm font-medium text-white">
+                    {photo.alt}
+                  </p>
+                </div>
+              </div>
+            </AnimatedSection>
+          ))}
         </div>
 
         <AnimatedSection className="mt-10 text-center">

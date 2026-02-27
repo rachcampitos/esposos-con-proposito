@@ -34,7 +34,7 @@ export function TestimonioDestacado() {
 
       <div className="relative mx-auto max-w-4xl px-4">
         <AnimatedSection>
-          <div className="glass-card-dark relative rounded-2xl bg-primary p-8 text-center sm:p-12">
+          <div className="relative rounded-2xl bg-primary p-8 text-center shadow-soft-lg sm:p-12">
             {/* Large decorative quotes */}
             <Quote className="mx-auto mb-6 h-12 w-12 text-secondary/30" />
 
@@ -46,13 +46,13 @@ export function TestimonioDestacado() {
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.4 }}
               >
-                <p className="font-heading text-xl leading-relaxed text-white/90 sm:text-2xl">
+                <p className="font-heading text-xl leading-relaxed text-white sm:text-2xl">
                   &ldquo;{t.quote}&rdquo;
                 </p>
 
                 <div className="mt-8">
                   <p className="font-medium text-secondary">{t.couple}</p>
-                  <p className="text-sm text-white/50">{t.years}</p>
+                  <p className="text-sm text-white/70">{t.years}</p>
                 </div>
               </motion.div>
             </AnimatePresence>

@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export function PageTransitionWrapper({
   children,
@@ -11,29 +11,31 @@ export function PageTransitionWrapper({
 }) {
   const pathname = usePathname();
   const shouldReduceMotion = useReducedMotion();
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, [pathname]);
 
-  const dur = shouldReduceMotion ? 0.01 : 0.25;
-  const exitDur = shouldReduceMotion ? 0.01 : 0.15;
-  const y = shouldReduceMotion ? 0 : 8;
+  const enterDuration = shouldReduceMotion ? 0 : 0.15;
+  const exitDuration = shouldReduceMotion ? 0 : 0.08;
 
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={pathname}
-        initial={{ opacity: 0, y }}
+        initial={{ opacity: 0 }}
         animate={{
           opacity: 1,
-          y: 0,
-          transition: { duration: dur, ease: "easeOut" },
+          transition: { duration: enterDuration, ease: "easeOut" },
         }}
         exit={{
           opacity: 0,
-          y: -y,
-          transition: { duration: exitDur, ease: "easeIn" },
+          transition: { duration: exitDuration, ease: "easeIn" },
         }}
       >
         {children}

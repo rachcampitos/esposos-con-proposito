@@ -13,21 +13,31 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <WaveDivider color="#4A1942" />
+
+      {/* Alto contraste — wave justificado */}
+      <WaveDivider from="#2D4A7A" to="#4A1942" />
       <CuaresmaBanner />
-      <WaveDivider color="#F5F0EB" flip />
+
+      {/* Alto contraste — wave justificado */}
+      <WaveDivider from="#4A1942" to="#F5F0EB" flip />
+
       <PullQuote
         quote="La familia es el camino de la Iglesia."
         source="San Juan Pablo II"
         reference="Gratissimam Sane, 1994"
       />
       <ValueProps />
-      <WaveDivider color="rgba(255,255,255,0.5)" />
+
+      <hr className="mx-auto max-w-5xl border-t border-primary/[0.08]" />
+
       <EventsPreview />
       <TestimonioDestacado />
-      <WaveDivider color="rgba(255,255,255,0.5)" />
+
+      <hr className="mx-auto max-w-5xl border-t border-primary/[0.08]" />
+
       <GaleriaPreview />
       <CTAFinal />
+
       <WhatsAppButton variant="floating" />
     </>
   );

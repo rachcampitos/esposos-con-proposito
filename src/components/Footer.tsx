@@ -68,7 +68,20 @@ export function Footer() {
         </div>
 
         <div className="mt-10 border-t border-cream-dark pt-6 text-center text-xs text-text-lighter">
-          &copy; {new Date().getFullYear()} Esposos con Propósito.
+          <p>&copy; {new Date().getFullYear()} Esposos con Propósito.</p>
+          <p className="mt-2">
+            Hecho con{" "}
+            <Heart className="inline h-3 w-3 fill-secondary stroke-secondary" />{" "}
+            por{" "}
+            <a
+              href="https://codemediaperu.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover-underline font-medium text-text-light transition-colors hover:text-primary"
+            >
+              Code Media
+            </a>
+          </p>
         </div>
       </div>
     </footer>
