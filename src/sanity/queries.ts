@@ -20,6 +20,24 @@ export async function getAnunciosActivos() {
   );
 }
 
+export async function getAllAnuncios() {
+  return safeFetch<
+    {
+      _id: string;
+      message: string;
+      date: string;
+      important: boolean;
+    }[]
+  >(
+    `*[_type == "anuncio"] | order(date desc) {
+      _id, message, date,
+      "important": coalesce(important, false)
+    }`,
+    undefined,
+    [],
+  );
+}
+
 // ---------- Eventos ----------
 
 export async function getEventos() {
