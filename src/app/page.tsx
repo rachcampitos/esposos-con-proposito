@@ -25,14 +25,14 @@ export default async function Home() {
     <>
       <Hero />
 
-      {anuncios.length > 0 && <AnunciosBanner anuncios={anuncios} />}
-
       {/* Alto contraste — wave justificado */}
       <WaveDivider from="#2D4A7A" to="#4A1942" />
       <CuaresmaBanner />
 
       {/* Alto contraste — wave justificado */}
       <WaveDivider from="#4A1942" to="#F5F0EB" flip />
+
+      {anuncios.length > 0 && <AnunciosBanner anuncios={anuncios} />}
 
       <PullQuote
         quote="La familia es el camino de la Iglesia."
