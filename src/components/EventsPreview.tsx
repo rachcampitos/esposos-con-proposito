@@ -22,8 +22,11 @@ export function EventsPreview() {
         <div className="grid gap-6 md:grid-cols-2">
           {upcoming.map((evento, i) => (
             <AnimatedSection key={evento.id} delay={i * 0.15}>
-              <div className="overflow-hidden rounded-2xl border border-cream-dark bg-white p-6 transition-shadow hover:shadow-md sm:p-8">
-                <div className="mb-4 inline-block rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-secondary">
+              <div className="group relative overflow-hidden rounded-2xl border border-cream-dark bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-soft-lg sm:p-8">
+                {/* Accent border left */}
+                <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-secondary to-secondary-light" />
+
+                <div className="mb-4 inline-block rounded-full bg-gradient-to-r from-secondary to-secondary-light px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
                   Próximo evento
                 </div>
                 <h3 className="mb-4 font-heading text-xl font-semibold text-primary">
@@ -34,17 +37,23 @@ export function EventsPreview() {
                 </p>
                 <div className="space-y-2 text-sm text-text-light">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-secondary" />
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary/10">
+                      <Calendar className="h-3.5 w-3.5 text-secondary" />
+                    </div>
                     {evento.date}
                   </div>
                   {evento.time && (
                     <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-secondary" />
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary/10">
+                        <Clock className="h-3.5 w-3.5 text-secondary" />
+                      </div>
                       {evento.time}
                     </div>
                   )}
                   <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-secondary" />
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary/10">
+                      <MapPin className="h-3.5 w-3.5 text-secondary" />
+                    </div>
                     {evento.location}
                   </div>
                 </div>
@@ -56,7 +65,7 @@ export function EventsPreview() {
         <AnimatedSection className="mt-10 text-center">
           <Link
             href="/eventos"
-            className="inline-flex items-center gap-2 font-medium text-primary transition-colors hover:text-primary-light"
+            className="hover-underline inline-flex items-center gap-2 font-medium text-primary transition-colors hover:text-primary-light"
           >
             Ver todos los eventos
             <ArrowRight className="h-4 w-4" />

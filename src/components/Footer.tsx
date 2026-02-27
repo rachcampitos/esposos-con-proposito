@@ -3,8 +3,16 @@ import { Heart } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-cream-dark bg-white/50 py-12">
-      <div className="mx-auto max-w-6xl px-4">
+    <footer className="border-t border-cream-dark" style={{ background: "linear-gradient(180deg, var(--color-cream) 0%, #ffffff 100%)" }}>
+      {/* Scripture quote banner */}
+      <div className="py-8 text-center">
+        <p className="mx-auto max-w-xl px-4 font-heading text-lg italic leading-relaxed text-primary/70">
+          &ldquo;Sobre todo esto, revístanse del amor, que es el vínculo de la perfección.&rdquo;
+        </p>
+        <p className="mt-2 text-sm text-text-lighter">Colosenses 3:14</p>
+      </div>
+
+      <div className="mx-auto max-w-6xl px-4 pb-12">
         <div className="grid gap-8 md:grid-cols-3">
           {/* Brand */}
           <div>
@@ -36,7 +44,7 @@ export function Footer() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-sm text-text-light transition-colors hover:text-primary"
+                  className="hover-underline w-fit text-sm text-text-light transition-colors hover:text-primary"
                 >
                   {l.label}
                 </Link>
@@ -60,8 +68,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 border-t border-cream-dark pt-6 text-center text-xs text-text-lighter">
-          &copy; {new Date().getFullYear()} Esposos con Propósito. Hecho con fe
-          y amor.
+          &copy; {new Date().getFullYear()} Esposos con Propósito.
         </div>
       </div>
     </footer>

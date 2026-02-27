@@ -36,22 +36,52 @@ export function ValueProps() {
           </p>
         </AnimatedSection>
 
-        <div className="grid gap-8 md:grid-cols-3">
-          {VALUES.map((v, i) => (
-            <AnimatedSection key={v.title} delay={i * 0.15}>
-              <div className="rounded-2xl border border-cream-dark bg-white/70 p-8 text-center transition-shadow hover:shadow-md">
-                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-                  <v.icon className="h-7 w-7 text-primary" />
-                </div>
-                <h3 className="mb-3 font-heading text-xl font-semibold text-primary">
-                  {v.title}
-                </h3>
-                <p className="leading-relaxed text-text-light">
-                  {v.description}
-                </p>
+        {/* Bento grid: first card spans 2 rows on md+ */}
+        <div className="grid gap-6 md:grid-cols-2 md:grid-rows-2">
+          {/* Featured card — Fe compartida */}
+          <AnimatedSection delay={0} className="md:row-span-2">
+            <div className="glass-card group h-full rounded-2xl p-8 text-center transition-all hover:shadow-soft-lg hover:border-secondary/30 md:flex md:flex-col md:justify-center md:text-left">
+              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-light md:mx-0">
+                <Heart className="h-8 w-8 text-white" />
               </div>
-            </AnimatedSection>
-          ))}
+              <h3 className="mb-3 font-heading text-2xl font-semibold text-primary">
+                {VALUES[0].title}
+              </h3>
+              <p className="text-lg leading-relaxed text-text-light">
+                {VALUES[0].description}
+              </p>
+            </div>
+          </AnimatedSection>
+
+          {/* Second card */}
+          <AnimatedSection delay={0.15}>
+            <div className="glass-card group h-full rounded-2xl p-8 text-center transition-all hover:shadow-soft-lg hover:border-secondary/30 md:text-left">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent to-accent-light md:mx-0">
+                <Users className="h-7 w-7 text-white" />
+              </div>
+              <h3 className="mb-3 font-heading text-xl font-semibold text-primary">
+                {VALUES[1].title}
+              </h3>
+              <p className="leading-relaxed text-text-light">
+                {VALUES[1].description}
+              </p>
+            </div>
+          </AnimatedSection>
+
+          {/* Third card */}
+          <AnimatedSection delay={0.3}>
+            <div className="glass-card group h-full rounded-2xl p-8 text-center transition-all hover:shadow-soft-lg hover:border-secondary/30 md:text-left">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-secondary to-secondary-light md:mx-0">
+                <BookOpen className="h-7 w-7 text-white" />
+              </div>
+              <h3 className="mb-3 font-heading text-xl font-semibold text-primary">
+                {VALUES[2].title}
+              </h3>
+              <p className="leading-relaxed text-text-light">
+                {VALUES[2].description}
+              </p>
+            </div>
+          </AnimatedSection>
         </div>
       </div>
     </section>
