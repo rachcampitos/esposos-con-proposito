@@ -1,87 +1,62 @@
-import { Hero } from "@/components/Hero";
-import { WaveDivider } from "@/components/WaveDivider";
-import { CuaresmaBanner } from "@/components/CuaresmaBanner";
-import {
-  TemporadaLiturgicaBanner,
-  TEMPORADA_COLORS,
-} from "@/components/TemporadaLiturgicaBanner";
-import { ReflexionSemanal } from "@/components/ReflexionSemanal";
-import { SantoDelMes } from "@/components/SantoDelMes";
-import { PullQuote } from "@/components/PullQuote";
-import { ValueProps } from "@/components/ValueProps";
-import { EventsPreview } from "@/components/EventsPreview";
-import { TestimonioDestacado } from "@/components/TestimonioDestacado";
-import { GaleriaPreview } from "@/components/GaleriaPreview";
-import { CTAFinal } from "@/components/CTAFinal";
-import { WhatsAppButton } from "@/components/WhatsAppButton";
-import { AnunciosBanner } from "@/components/AnunciosBanner";
-import {
-  getAnunciosActivos,
-  getEventos,
-  getTestimonios,
-  getFotosPreview,
-  getReflexionSemanal,
-  getTemporadaLiturgica,
-  getSantoDelMes,
-} from "@/sanity/queries";
+import Link from "next/link";
+import { Heart, ChevronRight, Users } from "lucide-react";
 
-export const revalidate = 60;
-
-export default async function Home() {
-  const [anuncios, eventos, testimonios, fotos, reflexion, temporada, santo] =
-    await Promise.all([
-      getAnunciosActivos(),
-      getEventos(),
-      getTestimonios(),
-      getFotosPreview(),
-      getReflexionSemanal(),
-      getTemporadaLiturgica(),
-      getSantoDelMes(),
-    ]);
-
-  // Resolve banner bg color for wave dividers
-  const bannerBg = temporada
-    ? (TEMPORADA_COLORS[temporada.temporada]?.bg ?? "#4A1942")
-    : "#4A1942";
-
+export default function Home() {
   return (
-    <>
-      <Hero />
+    <div className="flex min-h-screen flex-col items-center justify-center bg-cream px-6">
+      <div className="flex w-full max-w-sm flex-col items-center gap-10 text-center">
 
-      {/* Liturgical season banner (dynamic) or hardcoded Cuaresma fallback */}
-      <WaveDivider from="#2D4A7A" to={bannerBg} />
-      {temporada ? (
-        <TemporadaLiturgicaBanner temporada={temporada} />
-      ) : (
-        <CuaresmaBanner />
-      )}
-      <WaveDivider from={bannerBg} to="#F5F0EB" flip />
+        {/* Logo y título */}
+        <div className="flex flex-col items-center gap-5">
+          <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-primary shadow-glow-gold">
+            <Heart className="h-10 w-10 fill-secondary stroke-secondary" />
+          </div>
+          <div>
+            <h1 className="font-heading text-3xl font-semibold text-primary">
+              Esposos con Propósito
+            </h1>
+            <p className="mt-2 text-sm text-text-light">
+              Directorio de nuestra comunidad
+            </p>
+          </div>
+        </div>
 
-      {anuncios.length > 0 && <AnunciosBanner anuncios={anuncios} />}
+        {/* CTAs */}
+        <div className="flex w-full flex-col gap-3">
+          <Link
+            href="/unirse"
+            className="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-primary px-8 py-4 font-semibold text-white shadow-glow-gold transition hover:bg-primary-dark active:scale-[0.98]"
+          >
+            <Heart className="h-5 w-5 fill-white stroke-white" />
+            Agregar nuestro matrimonio
+          </Link>
 
-      <PullQuote
-        quote="La familia es el camino de la Iglesia."
-        source="San Juan Pablo II"
-        reference="Gratissimam Sane, 1994"
-      />
-      <ValueProps />
+          <Link
+            href="/comunidad"
+            className="flex w-full items-center justify-center gap-2.5 rounded-2xl border-2 border-primary/20 bg-white px-8 py-3.5 font-semibold text-primary transition hover:border-primary/40 hover:bg-primary/5 active:scale-[0.98]"
+          >
+            <Users className="h-5 w-5" />
+            Ver nuestra comunidad
+          </Link>
 
-      <hr className="mx-auto max-w-5xl border-t border-primary/[0.08]" />
+          <p className="text-center text-xs text-text-lighter pt-1">
+            ¿Ya te registraste?{" "}
+            <Link href="/editar" className="text-text-light underline hover:text-primary">
+              Actualiza tus datos
+            </Link>
+          </p>
+        </div>
 
-      <EventsPreview eventos={eventos} />
+        {/* Link admin discreto */}
+        <Link
+          href="/login"
+          className="flex items-center gap-1 text-sm text-text-lighter transition hover:text-primary"
+        >
+          Soy del equipo
+          <ChevronRight className="h-3.5 w-3.5" />
+        </Link>
 
-      {reflexion && <ReflexionSemanal reflexion={reflexion} />}
-
-      <TestimonioDestacado testimonios={testimonios} />
-
-      {santo && <SantoDelMes santo={santo} />}
-
-      <hr className="mx-auto max-w-5xl border-t border-primary/[0.08]" />
-
-      <GaleriaPreview fotos={fotos} />
-      <CTAFinal />
-
-      <WhatsAppButton variant="floating" />
-    </>
+      </div>
+    </div>
   );
 }
