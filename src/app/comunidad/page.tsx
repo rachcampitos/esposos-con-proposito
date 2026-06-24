@@ -2,10 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Heart, Users, Music, Calendar, Search, ArrowLeft } from "lucide-react";
+import { Heart, Users, Music, Search, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import type { Matrimonio } from "@/app/directorio/page";
+
+function primerNombre(nombre: string): string {
+  return nombre.split(" ")[0];
+}
 
 function aniosCasados(fechaBodas: string | null): string {
   if (!fechaBodas) return "";
@@ -14,11 +18,20 @@ function aniosCasados(fechaBodas: string | null): string {
   return diff === 1 ? "1 año juntos" : `${diff} años juntos`;
 }
 
-function formatFecha(fecha: string | null): string {
+function formatFechaCumple(fecha: string | null): string {
   if (!fecha) return "";
   return new Date(fecha + "T00:00:00").toLocaleDateString("es-PE", {
     day: "numeric",
     month: "long",
+  });
+}
+
+function formatFechaBodas(fecha: string | null): string {
+  if (!fecha) return "";
+  return new Date(fecha + "T00:00:00").toLocaleDateString("es-PE", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   });
 }
 
@@ -32,100 +45,121 @@ function proximoCumple(fecha: string | null): boolean {
 }
 
 function ComunidadCard({ m }: { m: Matrimonio }) {
+  const tieneProximoCumple =
+    proximoCumple(m.cumple_el) || proximoCumple(m.cumple_ella);
+
   return (
-    <div className="glass-card overflow-hidden rounded-2xl shadow-soft transition hover:shadow-soft-lg hover:-translate-y-0.5">
-      {/* Foto banner */}
-      <div className="relative h-48 w-full bg-primary/10">
+    <div
+      className={`overflow-hidden rounded-2xl bg-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-soft-lg ${
+        tieneProximoCumple ? "ring-2 ring-secondary/40" : "border border-cream-dark/60"
+      }`}
+    >
+      {/* Foto o placeholder cálido */}
+      <div className="relative h-48 w-full">
         {m.foto_url ? (
-          <Image
-            src={m.foto_url}
-            alt={`${m.nombre_el} y ${m.nombre_ella}`}
-            fill
-            className="object-cover"
-          />
+          <>
+            <Image
+              src={m.foto_url}
+              alt={`${m.nombre_el} y ${m.nombre_ella}`}
+              fill
+              className="object-cover"
+            />
+            {/* Overlay gradiente con nombres */}
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent px-4 pb-3 pt-10">
+              <p className="font-heading font-semibold text-white leading-tight">
+                {m.nombre_el} y {m.nombre_ella}
+              </p>
+              <p className="text-xs text-white/75">{m.apellidos}</p>
+            </div>
+          </>
         ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-2">
-            <Heart className="h-10 w-10 text-secondary/30" />
-          </div>
-        )}
-        {/* Overlay con nombres encima de la foto si hay foto */}
-        {m.foto_url && (
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-4 pb-3 pt-8">
-            <p className="font-heading font-semibold text-white leading-tight drop-shadow">
-              {m.nombre_el} y {m.nombre_ella}
-            </p>
-            <p className="text-xs text-white/80">{m.apellidos}</p>
+          <div className="flex h-full w-full flex-col items-end justify-between bg-gradient-to-br from-primary/10 via-cream to-secondary/10 p-4 pb-3">
+            {/* Iniciales */}
+            <span className="font-heading text-4xl font-bold text-primary/20 tracking-wider">
+              {primerNombre(m.nombre_el)[0]}{primerNombre(m.nombre_ella)[0]}
+            </span>
+            {/* Nombres abajo */}
+            <div>
+              <p className="font-heading font-semibold text-primary leading-tight">
+                {m.nombre_el} y {m.nombre_ella}
+              </p>
+              <p className="text-xs text-text-light">{m.apellidos}</p>
+            </div>
           </div>
         )}
       </div>
 
+      {/* Acento dorado */}
+      <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-secondary/40 to-transparent" />
+
       {/* Contenido */}
-      <div className="p-4">
-        {/* Nombres si no hay foto */}
-        {!m.foto_url && (
-          <div className="mb-3">
-            <p className="font-heading font-semibold text-primary leading-tight">
-              {m.nombre_el} y {m.nombre_ella}
-            </p>
-            <p className="text-sm text-text-light">{m.apellidos}</p>
+      <div className="p-4 space-y-2 text-sm text-text-light">
+
+        {/* Aniversario */}
+        {m.fecha_bodas && (
+          <div className="flex items-start gap-2">
+            <Heart className="mt-0.5 h-3.5 w-3.5 shrink-0 fill-secondary text-secondary" />
+            <span>
+              <span className="font-medium text-text">{aniosCasados(m.fecha_bodas)}</span>
+              <span className="text-text-lighter"> · {formatFechaBodas(m.fecha_bodas)}</span>
+            </span>
           </div>
         )}
 
-        <div className="space-y-1.5 text-sm text-text-light">
-          {m.fecha_bodas && (
-            <div className="flex items-center gap-2">
-              <Heart className="h-3.5 w-3.5 shrink-0 text-secondary" />
-              <span className="font-medium text-text">
-                {aniosCasados(m.fecha_bodas)}
-              </span>
-              <span className="text-text-lighter">· {formatFecha(m.fecha_bodas)}</span>
-            </div>
-          )}
-
-          {(m.cumple_el || m.cumple_ella) && (
-            <div className="flex items-center gap-2">
-              <Calendar className="h-3.5 w-3.5 shrink-0 text-secondary" />
-              <span>
-                {m.cumple_el && (
-                  <span>
-                    {proximoCumple(m.cumple_el) && "🎂 "}
-                    Él: {formatFecha(m.cumple_el)}
+        {/* Cumpleaños — con primer nombre */}
+        {(m.cumple_el || m.cumple_ella) && (
+          <div className="flex items-start gap-2">
+            <span className="mt-0.5 text-sm leading-none">🎂</span>
+            <div className="space-y-0.5">
+              {m.cumple_el && (
+                <p>
+                  <span className="font-medium text-text">
+                    {primerNombre(m.nombre_el)}
                   </span>
-                )}
-                {m.cumple_el && m.cumple_ella && " · "}
-                {m.cumple_ella && (
-                  <span>
-                    {proximoCumple(m.cumple_ella) && "🎂 "}
-                    Ella: {formatFecha(m.cumple_ella)}
+                  {proximoCumple(m.cumple_el) && " 🎉"}
+                  <span className="text-text-lighter"> · {formatFechaCumple(m.cumple_el)}</span>
+                </p>
+              )}
+              {m.cumple_ella && (
+                <p>
+                  <span className="font-medium text-text">
+                    {primerNombre(m.nombre_ella)}
                   </span>
-                )}
-              </span>
+                  {proximoCumple(m.cumple_ella) && " 🎉"}
+                  <span className="text-text-lighter"> · {formatFechaCumple(m.cumple_ella)}</span>
+                </p>
+              )}
             </div>
-          )}
+          </div>
+        )}
 
-          {m.hijos > 0 && (
-            <div className="flex items-center gap-2">
-              <Users className="h-3.5 w-3.5 shrink-0 text-secondary" />
-              <span>{m.hijos} {m.hijos === 1 ? "hijo" : "hijos"}</span>
-            </div>
-          )}
+        {/* Hijos */}
+        {m.hijos > 0 && (
+          <div className="flex items-center gap-2">
+            <Users className="h-3.5 w-3.5 shrink-0 text-secondary" />
+            <span>
+              {m.hijos === 1 ? "1 hijo" : `${m.hijos} hijos`}
+            </span>
+          </div>
+        )}
 
-          {m.talentos && (
-            <div className="flex items-center gap-2">
-              <Music className="h-3.5 w-3.5 shrink-0 text-secondary" />
-              <span className="truncate">{m.talentos}</span>
-            </div>
-          )}
+        {/* Talentos */}
+        {m.talentos && (
+          <div className="flex items-center gap-2">
+            <Music className="h-3.5 w-3.5 shrink-0 text-secondary" />
+            <span className="truncate">{m.talentos}</span>
+          </div>
+        )}
 
-          {m.grupo_retiro && (
-            <div className="flex items-center gap-2">
-              <span className="inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[9px] font-bold text-primary">
-                R
-              </span>
-              <span>{m.grupo_retiro}</span>
-            </div>
-          )}
-        </div>
+        {/* Grupo retiro */}
+        {m.grupo_retiro && (
+          <div className="pt-1">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/8 px-3 py-1 text-xs font-medium text-primary/70">
+              ✝ Retiro · {m.grupo_retiro}
+            </span>
+          </div>
+        )}
+
       </div>
     </div>
   );
@@ -175,7 +209,7 @@ export default function ComunidadPage() {
               Esposos con Propósito
             </span>
           </div>
-          <div className="w-16" /> {/* Espaciado para centrar el título */}
+          <div className="w-16" />
         </div>
       </header>
 
@@ -187,7 +221,8 @@ export default function ComunidadPage() {
           </h2>
           {!cargando && (
             <p className="mt-1 text-sm text-text-light">
-              {matrimonios.length} {matrimonios.length === 1 ? "matrimonio" : "matrimonios"} en ECP
+              {matrimonios.length}{" "}
+              {matrimonios.length === 1 ? "matrimonio" : "matrimonios"} en ECP
             </p>
           )}
         </div>
