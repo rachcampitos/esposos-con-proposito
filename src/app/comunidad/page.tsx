@@ -62,7 +62,7 @@ function ComunidadCard({ m }: { m: Matrimonio }) {
               src={m.foto_url}
               alt={`${m.nombre_el} y ${m.nombre_ella}`}
               fill
-              className="object-cover"
+              className="object-cover object-top"
             />
             {/* Overlay gradiente con nombres */}
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent px-4 pb-3 pt-10">
