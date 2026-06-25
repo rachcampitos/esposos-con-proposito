@@ -7,7 +7,7 @@ import { Camera, Heart } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import type { Matrimonio } from "@/app/directorio/page";
 
-type FormData = Omit<Matrimonio, "id" | "user_id" | "foto_url"> & { foto_url: string | null };
+type FormData = Omit<Matrimonio, "id" | "user_id" | "foto_url" | "foto_position"> & { foto_url: string | null };
 
 const EMPTY: FormData = {
   nombre_el: "",

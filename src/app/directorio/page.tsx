@@ -18,6 +18,7 @@ export type Matrimonio = {
   telefono: string | null;
   email: string | null;
   foto_url: string | null;
+  foto_position: string | null;
 };
 
 export default async function DirectorioPage() {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   Phone,
@@ -49,14 +48,28 @@ interface Props {
   userId: string;
 }
 
+const POSICIONES = [
+  { valor: "top",    icono: "↑" },
+  { valor: "center", icono: "↔" },
+  { valor: "bottom", icono: "↓" },
+] as const;
+
+function objectPositionClass(pos: string | null) {
+  if (pos === "top") return "object-top";
+  if (pos === "bottom") return "object-bottom";
+  return "object-center";
+}
+
 function MatrimonioCard({
   m,
   onEliminar,
+  onPosition,
   eliminando,
   showActions,
 }: {
   m: Matrimonio;
   onEliminar?: (id: string) => void;
+  onPosition?: (id: string, pos: string) => void;
   eliminando?: string | null;
   showActions: boolean;
 }) {
@@ -65,12 +78,33 @@ function MatrimonioCard({
       {/* Foto banner */}
       <div className="relative h-44 w-full bg-primary/10">
         {m.foto_url ? (
-          <Image
-            src={m.foto_url}
-            alt={m.apellidos}
-            fill
-            className="object-cover"
-          />
+          <>
+            <Image
+              src={m.foto_url}
+              alt={m.apellidos}
+              fill
+              className={`object-cover ${objectPositionClass(m.foto_position)}`}
+            />
+            {/* Controles de posición — solo admin */}
+            {onPosition && (
+              <div className="absolute right-2 top-2 flex flex-col gap-1">
+                {POSICIONES.map(({ valor, icono }) => (
+                  <button
+                    key={valor}
+                    onClick={() => onPosition(m.id, valor)}
+                    title={valor}
+                    className={`flex h-6 w-6 items-center justify-center rounded text-xs font-bold shadow transition ${
+                      (m.foto_position ?? "center") === valor
+                        ? "bg-secondary text-white"
+                        : "bg-white/90 text-text-light hover:bg-white"
+                    }`}
+                  >
+                    {icono}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <Heart className="h-10 w-10 text-secondary/40" />
@@ -201,13 +235,13 @@ function MatrimonioCard({
 }
 
 function VistaAdmin({
-  matrimonios,
+  matrimonios: initialMatrimonios,
   userId,
 }: {
   matrimonios: Matrimonio[];
   userId: string;
 }) {
-  const router = useRouter();
+  const [matrimonios, setMatrimonios] = useState(initialMatrimonios);
   const [busqueda, setBusqueda] = useState("");
   const [eliminando, setEliminando] = useState<string | null>(null);
 
@@ -226,8 +260,16 @@ function VistaAdmin({
     setEliminando(id);
     const supabase = createClient();
     await supabase.from("matrimonios").delete().eq("id", id);
-    router.refresh();
+    setMatrimonios((prev) => prev.filter((m) => m.id !== id));
     setEliminando(null);
+  }
+
+  async function handlePosition(id: string, pos: string) {
+    setMatrimonios((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, foto_position: pos } : m))
+    );
+    const supabase = createClient();
+    await supabase.from("matrimonios").update({ foto_position: pos }).eq("id", id);
   }
 
   return (
@@ -255,6 +297,7 @@ function VistaAdmin({
               key={m.id}
               m={m}
               onEliminar={handleEliminar}
+              onPosition={handlePosition}
               eliminando={eliminando}
               showActions
             />
