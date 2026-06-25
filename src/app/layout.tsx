@@ -16,7 +16,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Esposos con Propósito — Directorio",
-  description: "Directorio privado de matrimonios ECP",
+  description: "Directorio de la comunidad de matrimonios ECP",
+  metadataBase: new URL("https://esposos-con-proposito-mld7.vercel.app"),
 };
 
 export default function RootLayout({
