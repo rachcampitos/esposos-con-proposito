@@ -75,7 +75,7 @@ export function MatrimonioForm({ inicial, redirectTo = "/directorio", successMes
         .upload(path, fotoFile, { upsert: true });
 
       if (uploadError) {
-        setError("Error al subir la foto. Intenta de nuevo.");
+        setError("No pudimos subir la foto. Por favor intenta de nuevo.");
         setLoading(false);
         return;
       }
@@ -101,14 +101,14 @@ export function MatrimonioForm({ inicial, redirectTo = "/directorio", successMes
         .from("matrimonios")
         .update(base)
         .eq("id", inicial.id);
-      if (error) { setError("Error al guardar."); setLoading(false); return; }
+      if (error) { setError("No pudimos guardar los cambios. Intenta de nuevo."); setLoading(false); return; }
     } else {
       const { data: { user } } = await supabase.auth.getUser();
       const { error } = await supabase.from("matrimonios").insert({
         ...base,
         user_id: user?.id ?? null,
       });
-      if (error) { setError("Error al guardar."); setLoading(false); return; }
+      if (error) { setError("No pudimos guardar los datos. Intenta de nuevo."); setLoading(false); return; }
     }
 
     if (successMessage) {
@@ -130,7 +130,7 @@ export function MatrimonioForm({ inicial, redirectTo = "/directorio", successMes
             {successMessage}
           </p>
           <p className="mt-1 text-sm text-text-light">
-            Los administradores de ECP podrán verlos en el directorio.
+            Ya forman parte del directorio de la comunidad ECP.
           </p>
         </div>
         <a
@@ -145,8 +145,9 @@ export function MatrimonioForm({ inicial, redirectTo = "/directorio", successMes
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+
       {/* Foto */}
-      <div className="flex flex-col items-center gap-3">
+      <div className="flex flex-col items-center gap-2">
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
@@ -157,10 +158,13 @@ export function MatrimonioForm({ inicial, redirectTo = "/directorio", successMes
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center gap-1 text-text-lighter">
               <Camera className="h-6 w-6" />
-              <span className="text-xs">Foto</span>
+              <span className="text-xs">Foto juntos</span>
             </div>
           )}
         </button>
+        <p className="text-xs text-text-lighter text-center">
+          {fotoPreview ? "" : "Una foto de los dos — opcional pero muy bienvenida"}
+        </p>
         <input
           ref={fileRef}
           type="file"
@@ -179,90 +183,174 @@ export function MatrimonioForm({ inicial, redirectTo = "/directorio", successMes
         )}
       </div>
 
+      {/* Separador */}
+      <div className="h-px bg-cream-dark/60" />
+
       {/* Nombres */}
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Nombre de él" required>
-          <input type="text" required value={form.nombre_el} onChange={(e) => set("nombre_el", e.target.value)} />
+        <Field label="Nombre del esposo" required>
+          <input
+            type="text"
+            required
+            value={form.nombre_el}
+            onChange={(e) => set("nombre_el", e.target.value)}
+            placeholder="Su nombre"
+          />
         </Field>
-        <Field label="Nombre de ella" required>
-          <input type="text" required value={form.nombre_ella} onChange={(e) => set("nombre_ella", e.target.value)} />
+        <Field label="Nombre de la esposa" required>
+          <input
+            type="text"
+            required
+            value={form.nombre_ella}
+            onChange={(e) => set("nombre_ella", e.target.value)}
+            placeholder="Su nombre"
+          />
         </Field>
       </div>
 
-      <Field label="Apellidos" required>
-        <input type="text" required value={form.apellidos} onChange={(e) => set("apellidos", e.target.value)} placeholder="Apellidos del matrimonio" />
+      <Field label="Sus apellidos" required>
+        <input
+          type="text"
+          required
+          value={form.apellidos}
+          onChange={(e) => set("apellidos", e.target.value)}
+          placeholder="Apellidos del matrimonio"
+        />
       </Field>
 
-      {/* Fechas */}
+      {/* Separador */}
+      <div className="h-px bg-cream-dark/60" />
+
+      {/* Cumpleaños */}
+      <div>
+        <p className="mb-3 text-sm font-medium text-text">Cumpleaños</p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Él cumple el...">
+            <input
+              type="date"
+              value={toInput(form.cumple_el)}
+              onChange={(e) => set("cumple_el", e.target.value || null)}
+            />
+          </Field>
+          <Field label="Ella cumple el...">
+            <input
+              type="date"
+              value={toInput(form.cumple_ella)}
+              onChange={(e) => set("cumple_ella", e.target.value || null)}
+            />
+          </Field>
+        </div>
+      </div>
+
+      <Field label="Fecha de su boda">
+        <input
+          type="date"
+          value={toInput(form.fecha_bodas)}
+          onChange={(e) => set("fecha_bodas", e.target.value || null)}
+        />
+      </Field>
+
+      {/* Separador */}
+      <div className="h-px bg-cream-dark/60" />
+
+      {/* Familia y comunidad */}
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Cumpleaños de él">
-          <input type="date" value={toInput(form.cumple_el)} onChange={(e) => set("cumple_el", e.target.value || null)} />
+        <Field label="¿Cuántos hijos tienen?">
+          <input
+            type="number"
+            min={0}
+            value={form.hijos}
+            onChange={(e) => set("hijos", parseInt(e.target.value) || 0)}
+          />
         </Field>
-        <Field label="Cumpleaños de ella">
-          <input type="date" value={toInput(form.cumple_ella)} onChange={(e) => set("cumple_ella", e.target.value || null)} />
-        </Field>
-      </div>
-
-      <Field label="Fecha de bodas">
-        <input type="date" value={toInput(form.fecha_bodas)} onChange={(e) => set("fecha_bodas", e.target.value || null)} />
-      </Field>
-
-      {/* Hijos y grupo */}
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Número de hijos">
-          <input type="number" min={0} value={form.hijos} onChange={(e) => set("hijos", parseInt(e.target.value) || 0)} />
-        </Field>
-        <Field label="Grupo del retiro">
-          <input type="text" value={toInput(form.grupo_retiro)} onChange={(e) => set("grupo_retiro", e.target.value || null)} placeholder="Ej. 1er grupo, 2do grupo..." />
+        <Field label="Grupo del retiro ECP">
+          <input
+            type="text"
+            value={toInput(form.grupo_retiro)}
+            onChange={(e) => set("grupo_retiro", e.target.value || null)}
+            placeholder="Ej. 1er grupo, 2do grupo..."
+          />
         </Field>
       </div>
 
-      <Field label="Talentos / habilidades">
-        <input type="text" value={toInput(form.talentos)} onChange={(e) => set("talentos", e.target.value || null)} placeholder="Ej. canto, guitarra, pintura..." />
+      <Field label="Sus talentos y dones">
+        <input
+          type="text"
+          value={toInput(form.talentos)}
+          onChange={(e) => set("talentos", e.target.value || null)}
+          placeholder="Ej. canto, guitarra, pintura, cocina..."
+        />
       </Field>
+
+      {/* Separador */}
+      <div className="h-px bg-cream-dark/60" />
 
       {/* Contacto */}
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Teléfono / WhatsApp">
-          <input type="tel" value={toInput(form.telefono)} onChange={(e) => set("telefono", e.target.value || null)} placeholder="+51 999 999 999" />
-        </Field>
-        <Field label="Correo electrónico">
-          <input type="email" value={toInput(form.email)} onChange={(e) => set("email", e.target.value || null)} placeholder="correo@ejemplo.com" />
-        </Field>
+      <div>
+        <p className="mb-3 text-sm font-medium text-text">Datos de contacto</p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="WhatsApp">
+            <input
+              type="tel"
+              value={toInput(form.telefono)}
+              onChange={(e) => set("telefono", e.target.value || null)}
+              placeholder="+51 999 999 999"
+            />
+          </Field>
+          <Field label="Correo electrónico">
+            <input
+              type="email"
+              value={toInput(form.email)}
+              onChange={(e) => set("email", e.target.value || null)}
+              placeholder="correo@ejemplo.com"
+            />
+          </Field>
+        </div>
       </div>
 
       {error && (
         <p className="rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-600">{error}</p>
       )}
 
-      <div className="flex gap-3">
+      <div className="flex gap-3 pt-2">
         <button
           type="button"
           onClick={() => router.back()}
           className="flex-1 rounded-xl border border-cream-dark py-2.5 text-sm font-medium text-text-light transition hover:bg-cream-dark/40"
         >
-          Cancelar
+          Regresar
         </button>
         <button
           type="submit"
           disabled={loading}
           className="flex-1 rounded-xl bg-primary py-2.5 text-sm font-semibold text-white transition hover:bg-primary-dark disabled:opacity-60"
         >
-          {loading ? "Guardando..." : isEdit ? "Guardar cambios" : "Agregar matrimonio"}
+          {loading
+            ? "Guardando..."
+            : isEdit
+            ? "Guardar cambios"
+            : "¡Listo, ya somos parte de ECP!"}
         </button>
       </div>
     </form>
   );
 }
 
-function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactElement }) {
+function Field({
+  label,
+  required,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  children: React.ReactElement;
+}) {
   return (
     <div>
       <label className="mb-1.5 block text-sm font-medium text-text">
         {label}
         {required && <span className="ml-0.5 text-secondary">*</span>}
       </label>
-      {/* Inject shared input styles via CSS */}
       <div className="[&_input]:w-full [&_input]:rounded-xl [&_input]:border [&_input]:border-cream-dark [&_input]:bg-white [&_input]:px-4 [&_input]:py-2.5 [&_input]:text-sm [&_input]:text-text [&_input]:outline-none [&_input]:transition [&_input:focus]:border-primary [&_input:focus]:ring-2 [&_input:focus]:ring-primary/20">
         {children}
       </div>

@@ -52,10 +52,10 @@ export default function EditarListaPage() {
         </div>
 
         <h2 className="font-heading mb-1 text-2xl font-semibold text-primary">
-          Actualizar datos
+          Actualizar nuestros datos
         </h2>
         <p className="mb-6 text-sm text-text-light">
-          Busca tu matrimonio y actualiza la información.
+          Busquen su matrimonio y actualicen lo que necesiten.
         </p>
 
         {/* Buscador */}

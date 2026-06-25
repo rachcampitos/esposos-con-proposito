@@ -25,10 +25,10 @@ export default function UnirsePage() {
         </div>
 
         <h2 className="font-heading mb-2 text-2xl font-semibold text-primary">
-          Agregar nuestro matrimonio
+          ¡Bienvenidos a la comunidad!
         </h2>
         <p className="mb-6 text-sm text-text-light">
-          Completa los datos para aparecer en el directorio ECP.
+          Es un gusto tenerlos. Compartan sus datos para que todos podamos conocerlos.
         </p>
 
         <div className="glass-card rounded-2xl p-6 shadow-soft-lg">
