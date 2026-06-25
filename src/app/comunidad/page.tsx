@@ -61,7 +61,7 @@ function ComunidadCard({ m }: { m: Matrimonio }) {
       }`}
     >
       {/* Foto o placeholder cálido */}
-      <div className="relative h-48 w-full">
+      <div className="relative h-56 w-full">
         {m.foto_url ? (
           <>
             <Image

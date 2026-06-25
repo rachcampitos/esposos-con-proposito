@@ -76,7 +76,7 @@ function MatrimonioCard({
   return (
     <div className="glass-card overflow-hidden rounded-2xl shadow-soft transition hover:shadow-soft-lg">
       {/* Foto banner */}
-      <div className="relative h-44 w-full bg-primary/10">
+      <div className="relative h-56 w-full bg-primary/10">
         {m.foto_url ? (
           <>
             <Image
