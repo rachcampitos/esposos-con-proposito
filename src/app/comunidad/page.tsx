@@ -30,7 +30,7 @@ function formatFechaBodas(fecha: string | null): string {
   if (!fecha) return "";
   return new Date(fecha + "T00:00:00").toLocaleDateString("es-PE", {
     day: "numeric",
-    month: "long",
+    month: "short",
     year: "numeric",
   });
 }
@@ -50,7 +50,7 @@ function ComunidadCard({ m }: { m: Matrimonio }) {
 
   return (
     <div
-      className={`overflow-hidden rounded-2xl bg-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-soft-lg ${
+      className={`flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-soft-lg ${
         tieneProximoCumple ? "ring-2 ring-secondary/40" : "border border-cream-dark/60"
       }`}
     >
@@ -93,7 +93,7 @@ function ComunidadCard({ m }: { m: Matrimonio }) {
       <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-secondary/40 to-transparent" />
 
       {/* Contenido */}
-      <div className="p-4 space-y-2 text-sm text-text-light">
+      <div className="flex flex-1 flex-col p-4 space-y-2 text-sm text-text-light">
 
         {/* Aniversario */}
         {m.fecha_bodas && (
