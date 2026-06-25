@@ -264,12 +264,15 @@ export function MatrimonioForm({ inicial, redirectTo = "/directorio", successMes
           />
         </Field>
         <Field label="Grupo del retiro ECP">
-          <input
-            type="text"
-            value={toInput(form.grupo_retiro)}
+          <select
+            value={form.grupo_retiro ?? ""}
             onChange={(e) => set("grupo_retiro", e.target.value || null)}
-            placeholder="Ej. 1er grupo, 2do grupo..."
-          />
+          >
+            <option value="">— Sin retiro aún —</option>
+            {["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4", "Grupo 5", "Grupo 6"].map((g) => (
+              <option key={g} value={g}>{g}</option>
+            ))}
+          </select>
         </Field>
       </div>
 
