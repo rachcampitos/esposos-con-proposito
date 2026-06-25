@@ -44,10 +44,11 @@ function proximoCumple(fecha: string | null): boolean {
   return diff >= 0 && diff <= 7;
 }
 
-function fotoPositionClass(pos: string | null) {
-  if (pos === "top") return "object-top";
-  if (pos === "bottom") return "object-bottom";
-  return "object-center";
+function toObjectPositionCSS(pos: string | null): string {
+  if (!pos || pos === "center") return "center";
+  if (pos === "top") return "top";
+  if (pos === "bottom") return "bottom";
+  return `center ${pos}`;
 }
 
 function ComunidadCard({ m }: { m: Matrimonio }) {
@@ -68,7 +69,8 @@ function ComunidadCard({ m }: { m: Matrimonio }) {
               src={m.foto_url}
               alt={`${m.nombre_el} y ${m.nombre_ella}`}
               fill
-              className={`object-cover ${fotoPositionClass(m.foto_position)}`}
+              className="object-cover"
+              style={{ objectPosition: toObjectPositionCSS(m.foto_position) }}
             />
             {/* Overlay gradiente con nombres */}
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 to-transparent px-4 pb-3 pt-10">

@@ -48,16 +48,18 @@ interface Props {
   userId: string;
 }
 
-const POSICIONES = [
-  { valor: "top",    icono: "↑" },
-  { valor: "center", icono: "↔" },
-  { valor: "bottom", icono: "↓" },
-] as const;
+function toObjectPositionCSS(pos: string | null): string {
+  if (!pos || pos === "center") return "center";
+  if (pos === "top") return "top";
+  if (pos === "bottom") return "bottom";
+  return `center ${pos}`;
+}
 
-function objectPositionClass(pos: string | null) {
-  if (pos === "top") return "object-top";
-  if (pos === "bottom") return "object-bottom";
-  return "object-center";
+function toSliderValue(pos: string | null): number {
+  if (!pos || pos === "center") return 50;
+  if (pos === "top") return 0;
+  if (pos === "bottom") return 100;
+  return parseInt(pos) || 50;
 }
 
 function MatrimonioCard({
@@ -83,25 +85,23 @@ function MatrimonioCard({
               src={m.foto_url}
               alt={m.apellidos}
               fill
-              className={`object-cover ${objectPositionClass(m.foto_position)}`}
+              className="object-cover"
+              style={{ objectPosition: toObjectPositionCSS(m.foto_position) }}
             />
-            {/* Controles de posición — solo admin */}
+            {/* Slider de posición — solo admin */}
             {onPosition && (
-              <div className="absolute right-2 top-2 flex flex-col gap-1">
-                {POSICIONES.map(({ valor, icono }) => (
-                  <button
-                    key={valor}
-                    onClick={() => onPosition(m.id, valor)}
-                    title={valor}
-                    className={`flex h-6 w-6 items-center justify-center rounded text-xs font-bold shadow transition ${
-                      (m.foto_position ?? "center") === valor
-                        ? "bg-secondary text-white"
-                        : "bg-white/90 text-text-light hover:bg-white"
-                    }`}
-                  >
-                    {icono}
-                  </button>
-                ))}
+              <div className="absolute right-2 top-2 bottom-2 flex flex-col items-center gap-1">
+                <span className="text-[9px] font-bold text-white/80 drop-shadow">▲</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={toSliderValue(m.foto_position)}
+                  onChange={(e) => onPosition(m.id, `${e.target.value}%`)}
+                  className="flex-1 accent-secondary"
+                  style={{ writingMode: "vertical-lr", direction: "rtl", width: "20px" }}
+                />
+                <span className="text-[9px] font-bold text-white/80 drop-shadow">▼</span>
               </div>
             )}
           </>
