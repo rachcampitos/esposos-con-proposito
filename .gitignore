@@ -36,6 +36,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# material fuente de eventos (fotos/videos van a Supabase Storage, no al repo)
+/Retiro 2026/
+/Sexualidad en el matrimonio.pptx
+/logo esposos con proposito
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

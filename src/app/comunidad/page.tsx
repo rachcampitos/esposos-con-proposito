@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Heart, Users, Music, Search, ArrowLeft } from "lucide-react";
+import { Heart, Users, Music, Search, ArrowLeft, Images } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import type { Matrimonio } from "@/app/directorio/page";
+
+type EventoDestacado = { slug: string; nombre: string };
 
 function primerNombre(nombre: string): string {
   return nombre.split(" ")[0];
@@ -177,6 +179,7 @@ export default function ComunidadPage() {
   const [matrimonios, setMatrimonios] = useState<Matrimonio[]>([]);
   const [busqueda, setBusqueda] = useState("");
   const [cargando, setCargando] = useState(true);
+  const [eventoDestacado, setEventoDestacado] = useState<EventoDestacado | null>(null);
 
   useEffect(() => {
     const supabase = createClient();
@@ -188,6 +191,15 @@ export default function ComunidadPage() {
         setMatrimonios(data ?? []);
         setCargando(false);
       });
+
+    supabase
+      .from("eventos")
+      .select("slug, nombre")
+      .eq("estado", "publicado")
+      .order("fecha", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => setEventoDestacado(data));
   }, []);
 
   const filtrados = matrimonios.filter((m) => {
@@ -234,6 +246,26 @@ export default function ComunidadPage() {
             </p>
           )}
         </div>
+
+        {/* Banner del álbum del evento destacado */}
+        {eventoDestacado && (
+          <Link
+            href={`/eventos/${eventoDestacado.slug}`}
+            className="mb-6 flex items-center justify-between gap-3 rounded-2xl bg-gradient-to-r from-primary to-primary-light px-5 py-4 text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-soft-lg"
+          >
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15">
+                <Images className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="font-heading text-sm font-semibold">
+                  Fotos de {eventoDestacado.nombre}
+                </p>
+                <p className="text-xs text-white/75">Revive los mejores momentos →</p>
+              </div>
+            </div>
+          </Link>
+        )}
 
         {/* Buscador */}
         <div className="relative mb-6 mx-auto max-w-sm">

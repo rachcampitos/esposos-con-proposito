@@ -1,7 +1,17 @@
 import Link from "next/link";
-import { Heart, ChevronRight, Users } from "lucide-react";
+import { Heart, ChevronRight, Users, Images } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const { data: eventoDestacado } = await supabase
+    .from("eventos")
+    .select("slug, nombre")
+    .eq("estado", "publicado")
+    .order("fecha", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-cream px-6">
       <div className="flex w-full max-w-sm flex-col items-center gap-10 text-center">
@@ -23,6 +33,16 @@ export default function Home() {
 
         {/* CTAs */}
         <div className="flex w-full flex-col gap-3">
+          {eventoDestacado && (
+            <Link
+              href={`/eventos/${eventoDestacado.slug}`}
+              className="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-secondary px-8 py-4 font-semibold text-white shadow-soft transition hover:bg-secondary-dark active:scale-[0.98]"
+            >
+              <Images className="h-5 w-5" />
+              Fotos de {eventoDestacado.nombre}
+            </Link>
+          )}
+
           <Link
             href="/unirse"
             className="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-primary px-8 py-4 font-semibold text-white shadow-glow-gold transition hover:bg-primary-dark active:scale-[0.98]"
