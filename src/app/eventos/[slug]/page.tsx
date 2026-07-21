@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Heart, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { GaleriaEvento } from "./GaleriaEvento";
+import { CITA_DESTACADA } from "./citas";
 
 export type Medio = {
   id: string;
@@ -89,6 +90,18 @@ export default async function EventoPage({
           )}
           <p className="mt-2 text-xs text-text-lighter">
             {medios.length} {medios.length === 1 ? "recuerdo" : "recuerdos"}
+          </p>
+        </div>
+
+        <div className="relative mx-auto mb-10 max-w-2xl overflow-hidden rounded-2xl border border-secondary/25 bg-white px-6 py-8 text-center shadow-soft sm:px-10 sm:py-10">
+          <span className="pointer-events-none absolute -top-3 left-4 font-heading text-7xl leading-none text-secondary/20 sm:text-8xl">
+            &ldquo;
+          </span>
+          <p className="relative font-heading text-xl italic text-primary sm:text-2xl">
+            {CITA_DESTACADA.texto}
+          </p>
+          <p className="relative mt-3 text-xs font-semibold uppercase tracking-wider text-secondary">
+            {CITA_DESTACADA.referencia}
           </p>
         </div>
 
