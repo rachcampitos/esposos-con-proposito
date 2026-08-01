@@ -12,7 +12,7 @@ export default async function EventoPreviewPage({
   const { slug } = await params;
   const { key } = await searchParams;
 
-  const token = process.env.PREVIEW_TOKEN;
+  const token = process.env.PREVIEW_TOKEN?.trim();
   if (!token || !key || key !== token) {
     notFound();
   }
